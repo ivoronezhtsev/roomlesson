@@ -10,7 +10,10 @@ import java.util.logging.Handler;
 import ru.voronezhtsev.roomlesson.data.NotesDatabase;
 
 /**
- * Класс приложения
+ * Класс приложения, сдесь создается БД блокнота,
+ * и предоставляется доступ к ней для других компонентов приложения.
+ *
+ * @author Воронежцев Игорь on 05.12.2018
  */
 public class App extends Application {
 
