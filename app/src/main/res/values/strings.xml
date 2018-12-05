@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Блокнот</string>
+    <string name="save_button">Сохранить</string>
+    <string name="back_button">Назад</string>
+    <string name="settings">Настройки</string>
+    <string name="text_size_title">Размер шрифта</string>
+    <string name="text_size_summary">В списке заметок</string>
+    <string name="text_color">Цвет шрифта</string>
+    <string name="text_color_summary">В списке заметок</string>
+    <string-array name="text_colors">
+        <item>Черный</item>
+        <item>Красный</item>
+        <item>Зеленый</item>
+    </string-array>
+    <string-array name="color_values">
+        <item>#ff000000</item>
+        <item>#ffff0000</item>
+        <item>#9983CC39</item>
+    </string-array>
+</resources>

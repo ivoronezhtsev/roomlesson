@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="text_size"
+        android:summary="@string/text_size_summary"
+        android:title="@string/text_size_title">
+    </EditTextPreference>
+    <ListPreference
+        android:entries="@array/text_colors"
+        android:entryValues="@array/color_values"
+        android:key="text_color"
+        android:summary="@string/text_color_summary"
+        android:title="@string/text_color">
+    </ListPreference>
+</PreferenceScreen>
