@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="ru.voronezhtsev.roomlesson">
 
     <application
@@ -10,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:resizeableActivity="true"
-        android:name=".App">
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name="ru.voronezhtsev.roomlesson.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

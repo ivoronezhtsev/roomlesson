@@ -2,8 +2,6 @@ package ru.voronezhtsev.roomlesson.ui;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,12 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import ru.voronezhtsev.roomlesson.App;
 import ru.voronezhtsev.roomlesson.R;
-import ru.voronezhtsev.roomlesson.data.NotesDAO;
-import ru.voronezhtsev.roomlesson.data.PreferencesDAO;
 
 public class NotesListFragment extends Fragment implements NotesActions {
     public static final String TAG = "NotesListFragment";
@@ -25,12 +19,16 @@ public class NotesListFragment extends Fragment implements NotesActions {
     private NotesAdapter mNotesAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private EditNoteFragment mEditNoteFragment;
-    private PreferencesDAO mPreferencesDAO;
+    private NotesRepository mNotesRepository;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mPreferencesDAO = new PreferencesDAO(context);
+        try {
+            mNotesRepository = (NotesRepository) context;
+        } catch (ClassCastException e) {
+            throw new IllegalStateException("Activity should implements NotesRepository interface", e);
+        }
     }
 
     @Override
@@ -52,10 +50,10 @@ public class NotesListFragment extends Fragment implements NotesActions {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mNotesAdapter = new NotesAdapter(
-                App.getDatabase().getNotesDAO().getNotes(),
+                mNotesRepository.getNotes(),
                 this,
-                Integer.parseInt(mPreferencesDAO.getTextSize()),
-                mPreferencesDAO.getTextColor());
+                Integer.parseInt(mNotesRepository.getTextSize()),
+                mNotesRepository.getTextColor());
         mRecyclerView.setAdapter(mNotesAdapter);
 
         view.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {

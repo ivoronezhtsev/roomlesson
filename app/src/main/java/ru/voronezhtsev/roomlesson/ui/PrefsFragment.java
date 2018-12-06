@@ -9,7 +9,6 @@ import android.view.View;
 
 import ru.voronezhtsev.roomlesson.R;
 import ru.voronezhtsev.roomlesson.data.NoteColor;
-import ru.voronezhtsev.roomlesson.data.PreferencesDAO;
 
 public class PrefsFragment extends PreferenceFragmentCompat {
     public static final String PREFS_TEXT_SIZE = "text_size";
@@ -22,36 +21,39 @@ public class PrefsFragment extends PreferenceFragmentCompat {
     private Preference mTextSizePreference;
     private Preference mColorPreference;
 
-    private PreferencesDAO mPreferencesDAO;
+    private NotesRepository mNotesRepository;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mPreferencesDAO = new PreferencesDAO(context);
+        try {
+            mNotesRepository = (NotesRepository) context;
+        } catch (ClassCastException e) {
+            throw new IllegalStateException("Activity should implements NotesRepository interface", e);
+        }
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mTextSizePreference.setSummary(mPreferencesDAO.getTextSize());
-        mColorPreference.setSummary(NoteColor.parseColor(mPreferencesDAO.getTextColor()).getName());
+        mTextSizePreference.setSummary(mNotesRepository.getTextSize());
+        mColorPreference.setSummary(NoteColor.parseColor(mNotesRepository.getTextColor()).getName());
 
         mTextSizePreference.setOnPreferenceChangeListener((preference, newValue) -> {
             mTextSizePreference.setSummary(newValue.toString());
-            mPreferencesDAO.saveTextSize(newValue.toString());
+            mNotesRepository.saveTextSize(newValue.toString());
             return true;
         });
 
         mColorPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             mColorPreference.setSummary(NoteColor.parseColor(newValue.toString()).getName());
-            mPreferencesDAO.saveTextColor(newValue.toString());
+            mNotesRepository.saveTextColor(newValue.toString());
             return true;
         });
     }

@@ -16,17 +16,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import ru.voronezhtsev.roomlesson.App;
 import ru.voronezhtsev.roomlesson.R;
 import ru.voronezhtsev.roomlesson.data.Note;
-import ru.voronezhtsev.roomlesson.data.PreferencesDAO;
 
 public class EditNoteFragment extends Fragment {
     public static final String TAG = "EditNoteFragment";
     public static final String KEY_ID = "ID";
     private static final String SAVED_MSG = "Сохранено";
     private EditText mEditText;
-    private PreferencesDAO mPreferencesDAO;
+    private NotesRepository mNotesRepository;
 
     public static EditNoteFragment newInstance(long id) {
         Bundle bundle = new Bundle();
@@ -39,7 +37,11 @@ public class EditNoteFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mPreferencesDAO = new PreferencesDAO(context);
+        try {
+            mNotesRepository = (NotesRepository) context;
+        } catch (ClassCastException e) {
+            throw new IllegalStateException("Activity should implements NotesRepository interface", e);
+        }
     }
 
     @Override
@@ -58,13 +60,12 @@ public class EditNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mEditText = view.findViewById(R.id.data_text_view);
-        mEditText.setTextColor(Color.parseColor(mPreferencesDAO.getTextColor()));
-        mEditText.setTextSize(TypedValue.COMPLEX_UNIT_SP, Float.parseFloat(mPreferencesDAO.getTextSize()));
+        mEditText.setTextColor(Color.parseColor(mNotesRepository.getTextColor()));
+        mEditText.setTextSize(TypedValue.COMPLEX_UNIT_SP, Float.parseFloat(mNotesRepository.getTextSize()));
         final Bundle bundle = getArguments();
 
         if (bundle != null) {
-            mEditText.setText(App.getDatabase()
-                    .getNotesDAO().getNote(bundle.getLong(KEY_ID)).getText());
+            mEditText.setText(mNotesRepository.getNote(bundle.getLong(KEY_ID)).getText());
         }
     }
 
@@ -78,11 +79,11 @@ public class EditNoteFragment extends Fragment {
             Bundle bundle = getArguments();
             if (bundle == null) {
                 Note note = new Note(mEditText.getText().toString(), "", "");
-                App.getDatabase().getNotesDAO().insert(note);
+                mNotesRepository.insert(note);
             } else {
                 Note note = new Note(bundle.getLong(KEY_ID), mEditText.getText().toString(),
                         "", "");
-                App.getDatabase().getNotesDAO().update(note);
+                mNotesRepository.update(note);
             }
             Toast.makeText(getContext(), SAVED_MSG, Toast.LENGTH_SHORT).show();
             return true;

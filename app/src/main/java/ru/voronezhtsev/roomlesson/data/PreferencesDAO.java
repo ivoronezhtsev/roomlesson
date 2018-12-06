@@ -30,17 +30,19 @@ public class PreferencesDAO {
     }
 
     /**
+     * @param defValue - значение по умолчанию, если настройки нет в хранилище.
      * @return размер текста заметок из настроек, sp
      */
-    public String getTextSize() {
-        return getStringValue(PREFS_TEXT_SIZE, DEFAULT_TEXT_SIZE);
+    public String getTextSize(String defValue) {
+        return getStringValue(PREFS_TEXT_SIZE, defValue);
     }
 
     /**
+     * @param defValue значение по умолчанию, если настройки нет в хранилище.
      * @return цвет текста заметок, например #ff000000
      */
-    public String getTextColor() {
-        return getStringValue(PREFS_TEXT_COLOR, DEFAULT_TEXT_COLOR);
+    public String getTextColor(String defValue) {
+        return getStringValue(PREFS_TEXT_COLOR, defValue);
     }
 
     /**
