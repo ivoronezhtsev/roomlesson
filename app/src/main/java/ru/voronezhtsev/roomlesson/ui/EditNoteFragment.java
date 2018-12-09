@@ -62,8 +62,12 @@ public class EditNoteFragment extends Fragment {
         mEditText = view.findViewById(R.id.data_text_view);
         mEditText.setTextColor(Color.parseColor(mNotesRepository.getTextColor()));
         mEditText.setTextSize(TypedValue.COMPLEX_UNIT_SP, Float.parseFloat(mNotesRepository.getTextSize()));
-        final Bundle bundle = getArguments();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Bundle bundle = getArguments();
         if (bundle != null) {
             mEditText.setText(mNotesRepository.getNote(bundle.getLong(KEY_ID)).getText());
         }
